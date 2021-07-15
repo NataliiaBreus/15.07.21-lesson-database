@@ -371,3 +371,34 @@ FROM "users"
 WHERE "height" > 2
 GROUP BY "is_male"
 ORDER BY "average_weight";
+
+/* Извлечь все бренды телефонов, в которых кол-во телефонов > 3k */
+
+SELECT "brand", SUM ("quantity") FROM phones
+GROUP BY "brand"
+HAVING SUM ("quantity") > 3000;
+
+
+/* Выбрать количество людей одинакового возраста, сгруппировать по возрасту, отображать только те группы, в которых кол-во людей одинакового возраста >1 */
+
+SELECT EXTRACT (YEAR FROM AGE ("birthday")) AS "Возраст", COUNT ("id") AS "Кол-во людей"
+FROM "users"
+GROUP BY EXTRACT (YEAR FROM AGE ("birthday"))
+HAVING COUNT ("id") > 5
+ORDER BY "Кол-во людей" DESC
+
+
+SELECT "Age",
+  COUNT ("id") AS "Amount of people"
+FROM (
+  SELECT EXTRACT (
+      YEAR
+      FROM AGE ("birthday")
+  ) AS "Age",
+
+  *
+  FROM "users"
+) AS "users_with_age"
+GROUP BY "Age"
+HAVING COUNT ("id") > 5
+ORDER BY "Amount of people" DESC;
