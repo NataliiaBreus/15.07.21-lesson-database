@@ -402,3 +402,39 @@ FROM (
 GROUP BY "Age"
 HAVING COUNT ("id") > 5
 ORDER BY "Amount of people" DESC;
+
+SELECT "firstname" FROM "users"
+WHERE "firstname" ~ 'M.*e{2}.*n';
+
+CREATE TABLE A (v CHAR(3), t INT);
+CREATE TABLE B (v CHAR(3));
+
+/* Все заказы одного юзера */
+
+SELECT u.*, o.id AS "orderId" FROM "users" AS u 
+JOIN orders AS o ON u.id = o."userId"
+WHERE u.id = 8
+
+/* Все заказы Samsung */
+
+SELECT o.id, o."createdAt", p.brand FROM orders AS o 
+JOIN phones_to_orders AS pto ON o.id = pto."orderId"
+JOIN phones AS p ON p.id = pto."phoneId"
+WHERE p.brand = 'Samsung'
+
+/* Выбрать из таблицы ордерс поля, подсчитать общее количество устройств в заказе */
+
+SELECT o.id, o."createdAt", SUM (pto."quantity") FROM orders AS o 
+JOIN phones_to_orders AS pto ON o.id = pto."orderId"
+GROUP BY o.id, o."createdAt";
+
+/* Выбрать юзеров и посчитать кол-во заказов по каждому */
+
+SELECT u.id, u."firstname", COUNT(o.id) FROM "users" AS u
+JOIN orders AS o ON u.id = o."userId"
+GROUP BY u.id, u."firstname"
+
+/* email пользователей, которые делали заказы бренда Honor */
+
+SELECT 
+
