@@ -432,9 +432,14 @@ GROUP BY o.id, o."createdAt";
 
 SELECT u.id, u."firstname", COUNT(o.id) FROM "users" AS u
 JOIN orders AS o ON u.id = o."userId"
-GROUP BY u.id, u."firstname"
+GROUP BY u.id, u."firstname";
 
 /* email пользователей, которые делали заказы бренда Honor */
 
-SELECT 
+SELECT u.email, p.brand FROM users AS u 
+JOIN orders AS o ON o."userId" = u.id 
+JOIN phones_to_orders AS pto ON pto."orderId" = o.id 
+JOIN phones AS p ON p.id = pto."phoneId"
+WHERE p.brand = 'Honor'
+GROUP BY u.email, p.brand
 
